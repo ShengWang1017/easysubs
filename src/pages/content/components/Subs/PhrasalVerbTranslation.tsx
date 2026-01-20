@@ -8,7 +8,7 @@ import { getLearningService } from "@src/utils/getLearningService";
 import toast from "react-hot-toast";
 import { PlusIcon } from "./assets/PlusIcon";
 
-export const PhrasalVerbTranslation: FC<{ phrasalVerb: TPhrasalVerb }> = ({ phrasalVerb }) => {
+export const PhrasalVerbTranslation: FC<{ phrasalVerb: TPhrasalVerb; sentence: string }> = ({ phrasalVerb, sentence }) => {
   const [learningService] = useUnit([$learningService]);
 
   const [service, setService] = useState<ILearningService>(null);
@@ -20,7 +20,7 @@ export const PhrasalVerbTranslation: FC<{ phrasalVerb: TPhrasalVerb }> = ({ phra
   const handleAddWord = (word: string, translation: string) => {
     if (service) {
       service
-        .addWord(word.toLowerCase(), translation, { partOfSpeech: "phrase" })
+        .addWord(word.toLowerCase(), translation, { partOfSpeech: "phrase", sentence: sentence })
         .then((value) => {
           toast.success(value);
         })

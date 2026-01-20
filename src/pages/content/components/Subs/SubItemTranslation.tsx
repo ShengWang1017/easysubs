@@ -18,7 +18,7 @@ import { $subsLanguage } from "@src/models/subs";
 import { getLearningService } from "@src/utils/getLearningService";
 import { TranslateSelect } from "../ui/TranslateSelect";
 
-export const SubItemTranslation: FC<{ text: string }> = ({ text }) => {
+export const SubItemTranslation: FC<{ text: string; sentence: string }> = ({ text, sentence }) => {
   useGate(WordTranslationsGate, text);
   const [currentWordTranslation, learningService, subsLanguage, translateLanguage, wordTranslationsPendings] = useUnit([
     $currentWordTranslation,
@@ -41,7 +41,7 @@ export const SubItemTranslation: FC<{ text: string }> = ({ text }) => {
   const handleAddWord = (word: string, translation: TWordTranslationItem) => {
     if (service) {
       service
-        .addWord(word.toLowerCase(), translation.word, { partOfSpeech: translation.partOfSpeech })
+        .addWord(word.toLowerCase(), translation.word, { partOfSpeech: translation.partOfSpeech, sentence: sentence })
         .then((value) => {
           toast.success(value);
         })

@@ -1,6 +1,7 @@
 export type TAditionalData = {
   context?: string;
   partOfSpeech?: string;
+  sentence?: string;
 };
 interface ILearningService {
   color: string;

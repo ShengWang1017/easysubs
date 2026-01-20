@@ -149,6 +149,18 @@ export class Anki implements ILearningService {
       return Promise.reject("No compatible Anki note type found. Please create a note type with at least 2 fields (ideally 'Front' and 'Back').");
     }
 
+    // Build front content with optional sentence context
+    let frontContent = word;
+    if (aditionalData.sentence) {
+      // Highlight the word in the sentence using bold + red style
+      const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const highlightedSentence = aditionalData.sentence.replace(
+        new RegExp(`\\b(${escapedWord})\\b`, 'gi'),
+        '<b style="color: red;">$1</b>'
+      );
+      frontContent = `${word}<br><br>${highlightedSentence}`;
+    }
+
     const addWordResult = await chrome.runtime.sendMessage({
       type: "post",
       url: ANKI_URL,
@@ -160,7 +172,7 @@ export class Anki implements ILearningService {
             deckName: ANKI_DESK,
             modelName: modelInfo.modelName,
             fields: {
-              [modelInfo.frontField]: word,
+              [modelInfo.frontField]: frontContent,
               [modelInfo.backField]: translation,
             },
             options: {

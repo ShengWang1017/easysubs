@@ -101,7 +101,7 @@ const Sub: FC<{ sub: TSub }> = ({ sub }) => {
       }}
     >
       {sub.items.map((item, index) => (
-        <SubItem subItem={item} index={index} />
+        <SubItem subItem={item} index={index} sentence={sub.cleanedText} />
       ))}
       {showTranslation && <SubFullTranslation text={sub.cleanedText} />}
     </div>
@@ -111,9 +111,10 @@ const Sub: FC<{ sub: TSub }> = ({ sub }) => {
 type TSubItemProps = {
   subItem: TSubItem;
   index: number;
+  sentence: string;
 };
 
-const SubItem: FC<TSubItemProps> = ({ subItem, index }) => {
+const SubItem: FC<TSubItemProps> = ({ subItem, index, sentence }) => {
   const [currentPhrasalVerb, handleSubItemMouseEntered, handleSubItemMouseLeft, findPhrasalVerbsPendings] = useUnit([
     $currentPhrasalVerb,
     subItemMouseEntered,
@@ -151,9 +152,9 @@ const SubItem: FC<TSubItemProps> = ({ subItem, index }) => {
         {!findPhrasalVerbsPendings[subItem.cleanedText] && showTranslation && (
           <>
             {currentPhrasalVerb ? (
-              <PhrasalVerbTranslation phrasalVerb={currentPhrasalVerb} />
+              <PhrasalVerbTranslation phrasalVerb={currentPhrasalVerb} sentence={sentence} />
             ) : (
-              <SubItemTranslation text={subItem.cleanedText} />
+              <SubItemTranslation text={subItem.cleanedText} sentence={sentence} />
             )}
           </>
         )}
